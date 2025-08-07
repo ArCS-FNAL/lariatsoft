@@ -37,6 +37,11 @@ mrb g lariatsoft
   # To check out a specific tag or branch, uncomment these lines:
   #cd $MRB_SOURCE/lariatsoft
   #git checkout tags/$VERSION
+
+# For ArCS development, checkout the arcs branch
+cd $MRB_SOURCE/lariatsoft
+git checkout arcs
+
 mrbsetenv
 mrb i --generator ninja
 mrbslp
