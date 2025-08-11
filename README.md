@@ -42,7 +42,7 @@ mrb g lariatsoft
 cd $MRB_SOURCE/lariatsoft
 git remote add upstream https://github.com/ArCS-FNAL/lariatsoft.git
 git fetch upstream
-git checkout arcs
+git checkout uostream/arcs
 
 mrbsetenv
 mrb i --generator ninja
