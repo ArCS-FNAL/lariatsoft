@@ -1,0 +1,9 @@
+BEGIN_PROLOG
+
+arcs_cosmicAnalysis:
+{
+  module_type: "CosmicArCSAnalysis"
+  Debug: false
+}
+
+END_PROLOG

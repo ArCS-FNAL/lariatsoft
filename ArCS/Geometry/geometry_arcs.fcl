@@ -1,0 +1,32 @@
+
+BEGIN_PROLOG
+
+arcs_geo:
+{
+ SurfaceY: 130.0e2                      #in cm, vertical distance to the surface
+ Name:     "arcs"
+ GDML:     "arcs.gdml"
+ ROOT:     "arcs.gdml"
+#GDML:     "arcs_wdisk.gdml"
+#ROOT:     "arcs_wdisk.gdml"
+}
+
+arcs_auxdetgeo: 
+{
+ Name:            "arcs"
+ GDML:            "arcs.gdml"
+ ROOT:            "arcs.gdml"
+ SortingParameters: {}                   # empty parameter set for default
+}
+
+arcs_geometry_helper:
+{
+ service_provider : LArIATGeometryHelper
+}
+
+arcs_auxdetgeometry_helper:
+{
+ service_provider: LArIATAuxDetGeometryHelper
+}
+
+END_PROLOG
