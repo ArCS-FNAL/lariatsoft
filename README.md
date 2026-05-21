@@ -18,7 +18,7 @@ sh /exp/lariat/data/users/jiaoyang/SL7/start_SL7dev_jsl.sh
 To set up the SL7 container for grid job submission:
 ```bash
 sh /exp/lariat/data/users/jiaoyang/SL7/start_SL7dev_jsl.sh
-sh /exp/lariat/data/users/jiaoyang/SL7/setup_projectpy.sh
+source /exp/lariat/data/users/jiaoyang/SL7/setup_projectpy.sh
 ```
 
 To set up a local development area for the first time:
