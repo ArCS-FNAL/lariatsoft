@@ -68,7 +68,7 @@ outputs:
  out1:
  {
    module_type: RootOutput
-   fileName:    "out-art.root"
+   fileName:    "art-root.root"
    dataTier:    "generated"
    compressionLevel: 1
  }

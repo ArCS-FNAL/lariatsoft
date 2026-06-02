@@ -1,0 +1,16 @@
+#include "standard_g4_lariat.fcl"
+
+services.MagneticField: {
+    FieldDescriptions: [
+         {
+            ConstantField: [
+               0, # T
+               0.7,
+               0
+            ]
+            MagnetizedVolume: "volDetEnclosure"
+            UseField: 1
+         }
+    ]
+    service_type: "MagneticField"
+}
