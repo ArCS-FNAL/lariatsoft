@@ -1,0 +1,17 @@
+BEGIN_PROLOG
+
+arcs_analysis:
+{
+  module_type: "ArCSAnalysis"
+  InputDetsimLabel:  "daq"        
+  Debug: false  
+}
+
+
+arcs_rawdump: {
+  module_type: RawDigitDumper
+  InputLabel:  "daq"          
+  OutputFile:  "rawdigits.csv"
+}
+
+END_PROLOG

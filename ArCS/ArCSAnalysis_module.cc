@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
-// Class:       CosmicArCSAnalysis
+// Class:       ArCSAnalysis
 // Module Type: analyzer
-// File:        CosmicArCSAnalysis_module.cc
+// File:        ArCSAnalysis_module.cc
 //
 // Generated at Fri Aug 8th 2025 by Li Jiaoyang
 ////////////////////////////////////////////////////////////////////////
@@ -15,6 +15,7 @@
 #include "fhiclcpp/ParameterSet.h"
 #include "art/Framework/Principal/Run.h"
 #include "art/Framework/Principal/SubRun.h"
+#include "art/Framework/Core/FileBlock.h"
 #include "art/Framework/Principal/Handle.h"
 #include "canvas/Persistency/Common/Ptr.h"
 #include "canvas/Persistency/Common/PtrVector.h"
@@ -81,19 +82,20 @@
 #include "TTree.h"
 #include "TTimeStamp.h"
 
-namespace lariat
+namespace arcs
 {
-  class CosmicArCSAnalysis;
+  class ArCSAnalysis;
 }
 
-class lariat::CosmicArCSAnalysis : public art::EDAnalyzer
+class arcs::ArCSAnalysis : public art::EDAnalyzer
 {
 public:
-  explicit CosmicArCSAnalysis(fhicl::ParameterSet const & p);
-  virtual ~CosmicArCSAnalysis();
+  explicit ArCSAnalysis(fhicl::ParameterSet const & p);
+  virtual ~ArCSAnalysis();
 
   // Required functions.
   void analyze(art::Event const & e) override;
+  void respondToOpenInputFile(const art::FileBlock &fb) override;
 
   // Selected optional functions.
   //void beginJob() override;
@@ -103,6 +105,8 @@ private:
   bool _debug;
   TTree* _tree;
   int _run, _subrun, _event;
+  std::string _file_name;
+  // GEANT4 level 
   std::vector<double> _mcp_startx; ///< G4 MCParticle start point X
   std::vector<double> _mcp_starty; ///< G4 MCParticle start point Y
   std::vector<double> _mcp_startz; ///< G4 MCParticle start point Z
@@ -122,10 +126,15 @@ private:
   std::vector<float> _mcp_Px; ///< G4 MCParticle momentum X
   std::vector<float> _mcp_Py; ///< G4 MCParticle momentum Y
   std::vector<float> _mcp_Pz; ///< G4 MCParticle momentum Z
+  
+  // detsim level 
+  std::string                     _InputDetsimLabel;
+  std::vector<int>                _Channels;
+  std::vector<std::vector<int>> _ADCs;
 };
 
 
-lariat::CosmicArCSAnalysis::CosmicArCSAnalysis(fhicl::ParameterSet const & pset)
+arcs::ArCSAnalysis::ArCSAnalysis(fhicl::ParameterSet const & pset)
   : EDAnalyzer(pset)
 {
 
@@ -135,6 +144,7 @@ lariat::CosmicArCSAnalysis::CosmicArCSAnalysis(fhicl::ParameterSet const & pset)
   _tree->Branch("run", &_run, "run/I");
   _tree->Branch("subrun", &_subrun, "subrun/I");
   _tree->Branch("event", &_event, "event/I");
+  _tree->Branch("file_name", &_file_name);
   _tree->Branch("mcp_startx", "std::vector<double>", &_mcp_startx);
   _tree->Branch("mcp_starty", "std::vector<double>", &_mcp_starty);
   _tree->Branch("mcp_startz", "std::vector<double>", &_mcp_startz);
@@ -154,17 +164,22 @@ lariat::CosmicArCSAnalysis::CosmicArCSAnalysis(fhicl::ParameterSet const & pset)
   _tree->Branch("mcp_Px", "std::vector<float>", &_mcp_Px);
   _tree->Branch("mcp_Py", "std::vector<float>", &_mcp_Py);
   _tree->Branch("mcp_Pz", "std::vector<float>", &_mcp_Pz);
+  
+  // detsim 
+  _InputDetsimLabel = pset.get<std::string>("InputDetsimLabel", "daq");
+  _tree->Branch("channels", "std::vector<int>", &_Channels);
+  _tree->Branch("adcs", "std::vector<std::vector<int>>", &_ADCs);   // STL vector branch — one entry = one channel's waveform
 }
 
-lariat::CosmicArCSAnalysis::~CosmicArCSAnalysis()
+arcs::ArCSAnalysis::~ArCSAnalysis()
 {
 }
 
-//void lariat::CosmicArCSAnalysis::reconfigure(fhicl::ParameterSet const & pset)
+//void arcs::ArCSAnalysis::reconfigure(fhicl::ParameterSet const & pset)
 //{
 //}
 
-void lariat::CosmicArCSAnalysis::analyze(art::Event const & evt)
+void arcs::ArCSAnalysis::analyze(art::Event const & evt)
 {
   
   bool isData = (bool)evt.isRealData();
@@ -174,7 +189,10 @@ void lariat::CosmicArCSAnalysis::analyze(art::Event const & evt)
   _subrun = evt.subRun();
   _event = evt.event();
 
-  if (_debug) std::cout<<"CosmicArCSAnalysis: looking at run:subrun:event: "<<_run<<":"<<_subrun<<":"<<_event<<std::endl; 
+  if (_debug) {
+    std::cout << "ArCSAnalysis: looking at file: " << _file_name << std::endl;
+    std::cout << "ArCSAnalysis: looking at run:subrun:event: " << _run << ":" << _subrun << ":" << _event << std::endl; 
+  }
 
   // #######################################
   // ### Get potentially useful services ###
@@ -234,14 +252,29 @@ void lariat::CosmicArCSAnalysis::analyze(art::Event const & evt)
                           << "," << 1e3*particle->E()
                           << ") MeV" << std::endl;
   }
+
+  // destim
+  auto const& digitHandle = evt.getValidHandle<std::vector<raw::RawDigit>>(_InputDetsimLabel);
+  _Channels.clear(); _ADCs.clear();
+  for (auto const& digit : *digitHandle) {
+    _Channels.push_back(digit.Channel());
+
+    std::vector<short> adcVec(digit.Samples());
+    raw::Uncompress(digit.ADCs(), adcVec, digit.Compression());
+    _ADCs.push_back(std::vector<int>(adcVec.begin(), adcVec.end()));
+    
+  }
   _tree->Fill();
 }
 
 
-//void lariat::CosmicArCSAnalysis::beginJob()
+//void arcs::ArCSAnalysis::beginJob()
 //{
 //
 //}
+void arcs::ArCSAnalysis::respondToOpenInputFile(const art::FileBlock &fb)
+{
+  _file_name = fb.fileName();
+}
 
-
-DEFINE_ART_MODULE(lariat::CosmicArCSAnalysis)
+DEFINE_ART_MODULE(arcs::ArCSAnalysis)
