@@ -1,0 +1,83 @@
+#
+# File:    corsika_lariat.fcl
+# Purpose: standard ArCS configuration for CORSIKA cosmic ray generator
+# Date:    August 8, 2025
+# Version: 1.1
+#
+# Provides:
+#  - arcs_corsika_p: module configuration for generation of protons; use as:
+#      
+#      physics: {
+#        producers: {
+#          generator: @local::arcs_corsika_p
+#        }
+#      }
+#      
+#  - arcs_corsika_cmc: module configuration for generation of assorted cosmic
+#    rays from different primary nuclei; use as:
+#      
+#      physics: {
+#        producers: {
+#          generator: @local::arcs_corsika_cmc
+#        }
+#      }
+#      
+#
+# Documentation at:
+# https://cdcvs.fnal.gov/redmine/projects/sbndcode/wiki/Cosmics
+#
+# Changes:
+# 20160817 (petrillo@fnal.gov) [v1.1]
+#   restyling (added comments)
+#
+#
+# inherited configuration
+#
+#include "CORSIKAGen.fcl"
+#include "cosmic_common_arcs.fcl"
+BEGIN_PROLOG
+
+#
+# arcs_corsika_p
+#
+# Cosmic rays from proton primary.
+#
+arcs_corsika_p: {
+
+     @table::standard_CORSIKAGen_protons  # from CORSIKAGen.fcl
+	   @table::arcs_cosmic_common
+
+  # use the shared copy of CORSIKA database files
+  ShowerInputFiles: [
+    "/cvmfs/sbn.osgstorage.org/pnfs/fnal.gov/usr/sbn/persistent/stash/physics/cosmics/Fermilab/CORSIKA/standard/v01_00/p_showers_*.db"
+  ] # ShowerInputFiles
+
+
+} # arcs_corsika_p
+
+
+#
+# arcs_corsika_cmc
+#
+# Cosmic rays from mix of primaries.
+#
+arcs_corsika_cmc: {
+
+  @table::standard_CORSIKAGen_CMC  # from CORSIKAGen.fcl
+  @table::arcs_cosmic_common
+
+  # use the shared copy of CORSIKA database files
+  ShowerInputFiles: [
+    "/cvmfs/sbn.osgstorage.org/pnfs/fnal.gov/usr/sbn/persistent/stash/physics/cosmics/Fermilab/CORSIKA/standard/v01_00/p_showers_*.db",
+    "/cvmfs/sbn.osgstorage.org/pnfs/fnal.gov/usr/sbn/persistent/stash/physics/cosmics/Fermilab/CORSIKA/standard/v01_00/He_showers_*.db",
+    "/cvmfs/sbn.osgstorage.org/pnfs/fnal.gov/usr/sbn/persistent/stash/physics/cosmics/Fermilab/CORSIKA/standard/v01_00/N_showers_*.db",
+    "/cvmfs/sbn.osgstorage.org/pnfs/fnal.gov/usr/sbn/persistent/stash/physics/cosmics/Fermilab/CORSIKA/standard/v01_00/Mg_showers_*.db",
+    "/cvmfs/sbn.osgstorage.org/pnfs/fnal.gov/usr/sbn/persistent/stash/physics/cosmics/Fermilab/CORSIKA/standard/v01_00/Fe_showers_*.db"
+  ] # ShowerInputFiles
+
+
+} # arcs_corsika_cmc
+
+
+
+END_PROLOG

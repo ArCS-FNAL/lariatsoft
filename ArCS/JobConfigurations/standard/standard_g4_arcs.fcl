@@ -1,0 +1,7 @@
+#include "geometry_arcs.fcl"
+#include "standard_g4_lariat.fcl"
+
+process_name: G4
+
+services.Geometry: @local::arcs_geo
+services.AuxDetGeometry: @local::arcs_geo

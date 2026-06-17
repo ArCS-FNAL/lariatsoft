@@ -71,6 +71,7 @@
 #include "lardataobj/Simulation/OpDetBacktrackerRecord.h"
 #include "lardataobj/Simulation/AuxDetSimChannel.h"
 #include "larcore/Geometry/Geometry.h"
+#include "larcorealg/Geometry/TPCGeo.h"
 
 // LArIATSoft includes
 #include "LArIATLArG4/AuxDetReadoutT1034.h"
@@ -339,6 +340,26 @@ namespace larg4 {
   void LArIATLArG4::beginJob()
   {
     art::ServiceHandle<geo::Geometry> geom;
+
+    // Get the dimensions of the cryostat. 
+    for(unsigned int c = 0; c < geom->Ncryostats(); ++c){
+
+      double bounds[6] = {0.};
+      geom->CryostatBoundaries(bounds, c);
+
+      std::cout << "Cryo Boundary. X: (" << bounds[0] << " ," << bounds[1] << ") cm, Y: (" << bounds[2] << " ," << bounds[3] << ") cm, Z: (" << bounds[4] << " ," << bounds[5] << ") cm" << std::endl;
+    }
+
+    // Get the dimensions of the chosen TPC's active volume
+    const auto& tpc = geom->TPC();
+    double minX = tpc.MinX();
+    double maxX = tpc.MaxX();
+    double minY = tpc.MinY();
+    double maxY = tpc.MaxY();
+    double minZ = tpc.MinZ();
+    double maxZ = tpc.MaxZ();
+    std::cout<<"TPC boundaries: X: ("<<minX<<", "<<maxX<<") cm, Y: ("<<minY<<", "<<maxY<<") cm, Z: ("<<minZ<<", "<<maxZ<<") cm"<<std::endl;
+
     auto* rng = &*(art::ServiceHandle<art::RandomNumberGenerator>());
 
     fG4Help = new g4b::G4Helper(fG4MacroPath, fG4PhysListName);

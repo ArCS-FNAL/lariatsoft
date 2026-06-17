@@ -1,0 +1,10 @@
+#include "prodsingle_common_arcs.fcl"
+
+process_name: SinglesGen
+
+outputs.out1.fileName: "prod_p_lariat_%tc_gen.root"
+
+physics.producers.generator.PDG: [ -11 ]               # positrons
+physics.producers.generator.P0: [ 0.2 ]                # Momentum = 0.1 GeV
+physics.producers.generator.SigmaP: [ 0. ]             # Momentum resolution
+
