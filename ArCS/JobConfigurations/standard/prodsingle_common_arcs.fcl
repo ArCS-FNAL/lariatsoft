@@ -4,21 +4,25 @@ process_name: SinglesGen
 
 outputs.out1.fileName: "prod_p_lariat_%tc_gen.root"
 
-physics.producers.generator.PDG: [ -11 ]               # positrons
+physics.producers.generator.PDG: [ 11 ]                # electrons
+
+# position 
 physics.producers.generator.PosDist: 0                 # Flat position dist.
 physics.producers.generator.X0: [ 20.0 ]               # x = 20.0 
 physics.producers.generator.Y0: [ 0.0 ]                # y = 0.0
 physics.producers.generator.Z0: [ 10. ]                # z = 10.0
-physics.producers.generator.T0: [ 0.0 ]                # t = (0, 10) us
 physics.producers.generator.SigmaX: [ 0.0 ]            # x-position resolution
 physics.producers.generator.SigmaY: [ 10.0 ]           # x-position resolution
 physics.producers.generator.SigmaZ: [ 0.0 ]            # x-position resolution
-physics.producers.generator.SigmaT: [ 10.0 ]           # timing resolution
+
+# momentum 
 physics.producers.generator.PDist: 0                   # Flat momentum dist. 
 physics.producers.generator.P0: [ 0.1 ]                # Momentum = 0.1 GeV
 physics.producers.generator.SigmaP: [ 0. ]             # Momentum resolution
+
+# angle
 physics.producers.generator.AngleDist: 0               # Flat angle dist.
 physics.producers.generator.Theta0XZ: [ 0. ]           # y-azimuth
 physics.producers.generator.Theta0YZ: [ 0. ]           # y-latitude
-physics.producers.generator.SigmaThetaXZ: [ 45. ]      
-physics.producers.generator.SigmaThetaYZ: [ 45. ]
+physics.producers.generator.SigmaThetaXZ: [ 0. ]      
+physics.producers.generator.SigmaThetaYZ: [ 0. ]

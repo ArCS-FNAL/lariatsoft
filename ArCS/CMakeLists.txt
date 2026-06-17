@@ -1,4 +1,4 @@
-add_subdirectory(fcls)
+add_subdirectory(JobConfigurations)
 add_subdirectory(Geometry)
 
 art_make( 

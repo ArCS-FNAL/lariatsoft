@@ -1,0 +1,18 @@
+#include "standard_g4_arcs.fcl"
+
+process_name: G4MAagenticField
+
+services.MagneticField: {
+    FieldDescriptions: [
+         {
+            ConstantField: [
+               0, # T
+               0.6,
+               0
+            ]
+            MagnetizedVolume: "volDetEnclosure"
+            UseField: 1
+         }
+    ]
+    service_type: "MagneticField"
+}
