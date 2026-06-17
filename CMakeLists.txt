@@ -114,5 +114,8 @@ add_subdirectory(test)
 # ups - table and config files
 add_subdirectory(ups)
 
+# ArcS
+add_subdirectory(ArCS)
+
 # packaging utility
 include(UseCPack)

@@ -11,10 +11,15 @@ ssh -X -Y -C <USERNAME>@lariatgpvm01.fnal.gov
 ```
 
 Once logged on, set up the Scientific Linux (SL7) container:
-
-```bash
-sh /exp/lariat/data/users/wforeman/SL7/start_SL7dev_jsl.sh
-```
+- standard setup: 
+  ```bash
+  sh /exp/lariat/data/users/jiaoyang/SL7/start_SL7dev_jsl.sh
+  ```
+- Special set up **only for grid job submission**:
+  ```bash
+  sh /exp/lariat/data/users/jiaoyang/SL7/start_SL7dev_jsl.sh
+  source /exp/lariat/data/users/jiaoyang/SL7/setup_projectpy.sh
+  ```
 
 To set up a local development area for the first time:
 
@@ -37,6 +42,13 @@ mrb g lariatsoft
   # To check out a specific tag or branch, uncomment these lines:
   #cd $MRB_SOURCE/lariatsoft
   #git checkout tags/$VERSION
+
+# For ArCS development, checkout the arcs branch
+cd $MRB_SOURCE/lariatsoft
+git remote add upstream https://github.com/ArCS-FNAL/lariatsoft.git
+git fetch upstream
+git checkout uostream/arcs
+
 mrbsetenv
 mrb i --generator ninja
 mrbslp
