@@ -62,9 +62,9 @@ mrbslp
 
 Everytime you log back into the gpvm, you will need to set up the working area. To set up an _existing_ working area:
 ```bash
+source /cvmfs/lariat.opensciencegrid.org/setup_lariat.sh
 cd $PROJDIR
 source localProducts*/setup
-setup $MRB_PROJECT $MRB_PROJECT_VERSION -q $MRB_QUALS
 mrbslp
 ```
 
