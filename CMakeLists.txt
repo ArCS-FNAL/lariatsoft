@@ -101,7 +101,6 @@ add_subdirectory(LArIATChecks)
 add_subdirectory(RawDataUtilities)
 add_subdirectory(Utilities)
 add_subdirectory(MichelQL)
-add_subdirectory(ArCS)
 
 # fcl files
 add_subdirectory(JobConfigurations)
