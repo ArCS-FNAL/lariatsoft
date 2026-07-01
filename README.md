@@ -60,7 +60,7 @@ mrb i -j 1 --generator ninja
 mrbslp
 ```
 
-To set up an _existing_ working area:
+Everytime you log back into the gpvm, you will need to set up the working area. To set up an _existing_ working area:
 ```bash
 cd $PROJDIR
 source localProducts*/setup
